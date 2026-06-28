@@ -1,0 +1,75 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const pathname = Astro.url.pathname;
+
+const base = '/tsukishima-writing-dashboard';
+
+const navItems = [
+  { href: `${base}/`, icon: 'dashboard', label: 'ダッシュボード' },
+  { href: `${base}/wiki/`, icon: 'book', label: 'Wiki' },
+  { href: `${base}/characters/`, icon: 'users', label: 'キャラクター' },
+  { href: `${base}/progress/`, icon: 'notebook', label: '執筆進捗' },
+  { href: `${base}/timeline/`, icon: 'timeline', label: 'タイムライン' },
+  { href: `${base}/foreshadowing/`, icon: 'eye', label: '伏線管理' },
+];
+
+function isActive(itemHref: string): boolean {
+  const normalizedPath = pathname.endsWith('/') ? pathname : pathname + '/';
+  const normalizedHref = itemHref.endsWith('/') ? itemHref : itemHref + '/';
+  return normalizedPath === normalizedHref;
+}
+---
+
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>筆</text></svg>" />
+</head>
+<body>
+  <div class="app-shell">
+    <nav class="sidebar">
+      <div class="sidebar-logo">月島式</div>
+      {navItems.map(item => (
+        <a href={item.href} class={`nav-item${isActive(item.href) ? ' active' : ''}`} title={item.label}>
+          {item.icon === 'dashboard' && (
+            <svg viewBox="0 0 24 24"><path d="M4 4h6v8H4zM14 4h6v6h-6zM14 14h6v6h-6zM4 16h6v4H4z"/></svg>
+          )}
+          {item.icon === 'book' && (
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          )}
+          {item.icon === 'users' && (
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          )}
+          {item.icon === 'notebook' && (
+            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+          )}
+          {item.icon === 'timeline' && (
+            <svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><polyline points="17 7 12 2 7 7"/><line x1="2" y1="17" x2="22" y2="17"/></svg>
+          )}
+          {item.icon === 'eye' && (
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          )}
+        </a>
+      ))}
+      <div class="sidebar-spacer"></div>
+    </nav>
+    <main class="main-content">
+      <slot />
+    </main>
+  </div>
+</body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>
+
+
+

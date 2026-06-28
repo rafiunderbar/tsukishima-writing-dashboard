@@ -1,0 +1,93 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { loadAllData } from '../utils/parseData';
+
+const { stats, chapters } = loadAllData();
+
+const statusColor: Record<string, string> = {
+  completed: 'var(--success)',
+  draft: 'var(--warning)',
+  concept: 'var(--bg-input)',
+};
+
+const statusLabel: Record<string, string> = {
+  completed: '完成稿',
+  draft: '草稿',
+  concept: '構想中',
+};
+
+const recentUpdates = [
+  { title: '第2章 完成', sub: '出会いのエピソード執筆完了', date: '2025-06' },
+  { title: '用語集を更新', sub: '魔法体系の設定を追加', date: '2025-06' },
+  { title: '伏線管理表を作成', sub: '伏線A・Bを登録', date: '2025-05' },
+  { title: '第1章 完成', sub: '旅立ちのエピソード執筆完了', date: '2025-05' },
+  { title: 'ダッシュボード初期構築', sub: 'プロジェクト開始', date: '2025-04' },
+];
+---
+
+<Layout title="月島式執筆ダッシュボード">
+  <h1 class="page-title">月島式執筆ダッシュボード</h1>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">キャラクター</div>
+      <div class="metric-value">{stats.totalCharacters}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">地名・場所</div>
+      <div class="metric-value">{stats.totalPlaces}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">用語・設定</div>
+      <div class="metric-value">{stats.totalTerms}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">勢力・制度</div>
+      <div class="metric-value">{stats.totalNations}</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="section-header">執筆進捗</div>
+      <div class="progress-list">
+        {chapters.map(ch => (
+          <div class={`progress-item${ch.status === 'concept' ? ' dim' : ''}`}>
+            <div class="progress-num">第{ch.number}話</div>
+            <div>
+              <div class="progress-title">{ch.title}</div>
+              {ch.wordCount && <div class="progress-sub">{ch.wordCount.toLocaleString()}文字</div>}
+              <div class="progress-bar-track">
+                <div
+                  class="progress-bar-fill"
+                  style={`width: ${ch.status === 'completed' ? '100%' : ch.status === 'draft' ? '50%' : '10%'}; background: ${statusColor[ch.status]}`}
+                />
+              </div>
+            </div>
+            <span class={`badge badge-${ch.status === 'completed' ? 'success' : ch.status === 'draft' ? 'warning' : 'muted'}`}>
+              {statusLabel[ch.status]}
+            </span>
+            <div style="font-size: 12px; color: var(--text-muted);">
+              {ch.wordCount ? `${ch.wordCount.toLocaleString()}字` : '—'}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div>
+      <div class="section-header">最近の更新</div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        {recentUpdates.map(u => (
+          <div class="update-item">
+            <div>
+              <div class="update-title">{u.title}</div>
+              <div class="update-sub">{u.sub}</div>
+            </div>
+            <div class="update-date">{u.date}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>
+

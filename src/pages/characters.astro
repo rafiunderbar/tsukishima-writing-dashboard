@@ -1,0 +1,142 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { loadAllData } from '../utils/parseData';
+
+const { characters } = loadAllData();
+
+const typeBadge: Record<string, string> = {
+  '正史': 'success',
+  '背景正史': 'accent',
+  '保留': 'warning',
+  '移植禁止': 'danger',
+  '採用候補': 'purple',
+};
+
+const avatarColors = [
+  'var(--accent-bg)',
+  'var(--success-bg)',
+  'var(--warning-bg)',
+  'var(--danger-bg)',
+  'var(--purple-bg)',
+];
+
+const avatarTextColors = [
+  'var(--accent-text)',
+  'var(--success-text)',
+  'var(--warning-text)',
+  'var(--danger-text)',
+  'var(--purple-text)',
+];
+---
+
+<Layout title="キャラクター - 月島式">
+  <h1 class="page-title">キャラクター</h1>
+
+  <div class="char-layout">
+    <div class="char-list" id="char-list">
+      {characters.map((ch, i) => (
+        <div
+          class={`char-list-item${i === 0 ? ' active' : ''}`}
+          data-index={i}
+        >
+          <div
+            class="char-avatar"
+            style={`background: ${avatarColors[i % avatarColors.length]}; color: ${avatarTextColors[i % avatarTextColors.length]}`}
+          >
+            {ch.shortName.slice(0, 1)}
+          </div>
+          <div>
+            <div style="font-size: 13px; font-weight: 500;">{ch.name}</div>
+            <div style="font-size: 11px; color: var(--text-muted);">{ch.classification}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="char-detail-panel" id="char-detail">
+      {characters.map((ch, i) => (
+        <div class="char-detail-content" data-index={i} style={i === 0 ? '' : 'display: none;'}>
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+            <div
+              class="char-avatar"
+              style={`width: 56px; height: 56px; font-size: 22px; background: ${avatarColors[i % avatarColors.length]}; color: ${avatarTextColors[i % avatarTextColors.length]}`}
+            >
+              {ch.shortName.slice(0, 1)}
+            </div>
+            <div>
+              <div style="font-size: 18px; font-weight: 600;">{ch.name}</div>
+              <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">{ch.description || '説明なし'}</div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <div class="detail-label">基本情報</div>
+            <div style="display: flex; gap: 16px; font-size: 13px;">
+              <div>
+                <span style="color: var(--text-muted);">区分:</span>{' '}
+                <span class={`badge badge-${typeBadge[ch.classification] || 'muted'}`}>{ch.classification}</span>
+              </div>
+              {ch.firstAppearance && (
+                <div>
+                  <span style="color: var(--text-muted);">初登場:</span> {ch.firstAppearance}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {ch.tags.length > 0 && (
+            <div class="detail-section">
+              <div class="detail-label">タグ</div>
+              <div>
+                {ch.tags.map(tag => (
+                  <span class="tag" style="background: var(--bg-input); color: var(--text-secondary);">{tag}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {ch.relations.length > 0 && (
+            <div class="detail-section">
+              <div class="detail-label">関係</div>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                {ch.relations.map(rel => {
+                  const target = characters.find(c => c.id === rel.target);
+                  const ti = target ? characters.indexOf(target) : 0;
+                  return (
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 13px;">
+                      <div
+                        class="char-avatar"
+                        style={`width: 24px; height: 24px; font-size: 10px; background: ${avatarColors[ti % avatarColors.length]}; color: ${avatarTextColors[ti % avatarTextColors.length]}`}
+                      >
+                        {target ? target.shortName.slice(0, 1) : '?'}
+                      </div>
+                      <span style="font-weight: 500;">{target?.name || rel.target}</span>
+                      <span style="color: var(--text-muted);">— {rel.type}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const listItems = document.querySelectorAll<HTMLElement>('.char-list-item');
+  const details = document.querySelectorAll<HTMLElement>('.char-detail-content');
+
+  listItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const idx = item.dataset.index;
+      listItems.forEach(li => li.classList.remove('active'));
+      item.classList.add('active');
+      details.forEach(d => {
+        d.style.display = d.dataset.index === idx ? '' : 'none';
+      });
+    });
+  });
+</script>
+

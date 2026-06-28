@@ -1,0 +1,37 @@
+{
+  "glossary": [
+    {"id": "主人公","name": "主人公の名前","category": "登場人物","classification": "確定","description": "物語の中心となるキャラクター。ここに説明を書く。","type": "character"},
+    {"id": "相棒","name": "相棒の名前","category": "登場人物","classification": "確定","description": "主人公の旅に同行する仲間。","type": "character"},
+    {"id": "敵役","name": "敵対者の名前","category": "登場人物","classification": "確定","description": "主人公に立ちはだかる存在。","type": "character"},
+    {"id": "王国A","name": "サンプル王国","category": "国家・勢力","classification": "確定","description": "物語の主要な舞台となる国家。","type": "nation"},
+    {"id": "帝国B","name": "サンプル帝国","category": "国家・勢力","classification": "確定","description": "王国と対立する大国。","type": "nation"},
+    {"id": "魔法体系","name": "魔法体系の名称","category": "用語・設定","classification": "確定","description": "この世界における魔法の基本原理。","type": "term"},
+    {"id": "古代遺跡","name": "古代遺跡の名前","category": "地名","classification": "確定","description": "物語の鍵を握る場所。","type": "place"},
+    {"id": "騎士団","name": "騎士団の名前","category": "制度・組織","classification": "確定","description": "王国を守護する武装組織。","type": "system"}
+  ],
+  "characters": [
+    {"id": "主人公","name": "主人公の名前","shortName": "主人公","description": "物語の中心となるキャラクター","classification": "確定","firstAppearance": "第1章","tags": ["確定","主人公"],"relations": [{"target": "相棒","type": "仲間"}]},
+    {"id": "相棒","name": "相棒の名前","shortName": "相棒","description": "主人公の旅に同行する仲間","classification": "確定","firstAppearance": "第1章","tags": ["確定","仲間"],"relations": [{"target": "主人公","type": "仲間"}]},
+    {"id": "敵役","name": "敵対者の名前","shortName": "敵役","description": "主人公に立ちはだかる存在","classification": "確定","firstAppearance": "第3章","tags": ["確定","敵対者"],"relations": [{"target": "主人公","type": "敵対"}]}
+  ],
+  "chapters": [
+    {"number": 1,"title": "第一章：旅立ち","status": "completed","wordCount": 3200,"file": "chapter_001.md"},
+    {"number": 2,"title": "第二章：出会い","status": "completed","wordCount": 2800,"file": "chapter_002.md"},
+    {"number": 3,"title": "第三章：試練","status": "draft","wordCount": 1500,"file": "chapter_003.md"},
+    {"number": 4,"title": "第四章：決断","status": "concept","file": ""},
+    {"number": 5,"title": "第五章：決戦","status": "concept","file": ""}
+  ],
+  "foreshadowing": [
+    {"id": "伏線A","name": "サンプル伏線A","role": "主人公の出自に関する謎","resolution": "第四章で回収予定","phases": [{"stage": "序盤","detail": "第1章で暗示"},{"stage": "中盤","detail": "第3章で手がかり"}]},
+    {"id": "伏線B","name": "サンプル伏線B","role": "敵対者の真の目的","resolution": "最終章で回収予定"}
+  ],
+  "stats": {
+    "totalCharacters": 3,
+    "totalTerms": 1,
+    "totalPlaces": 1,
+    "totalNations": 2,
+    "completedChapters": 2,
+    "totalChapters": 5,
+    "totalWords": 7500
+  }
+}

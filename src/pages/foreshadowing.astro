@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { loadAllData } from '../utils/parseData';
+
+const { foreshadowing } = loadAllData();
+---
+
+<Layout title="伏線管理 - 月島式">
+  <h1 class="page-title">伏線管理</h1>
+  <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
+    序盤で張った伏線とその進行状況
+  </p>
+
+  <div>
+    {foreshadowing.map(item => (
+      <div class="foreshadow-card">
+        <div class="foreshadow-title">{item.name}</div>
+        {item.role && (
+          <div class="foreshadow-role">
+            <span style="color: var(--text-muted);">役割:</span> {item.role}
+          </div>
+        )}
+        {item.resolution && (
+          <div class="foreshadow-role">
+            <span style="color: var(--text-muted);">回収:</span> {item.resolution}
+          </div>
+        )}
+        {item.phases && item.phases.length > 0 && (
+          <div class="phase-list" style="margin-top: 8px;">
+            {item.phases.map(phase => (
+              <div class="phase-item">
+                <span class="phase-stage">{phase.stage}</span>
+                <span style="color: var(--text-secondary);">{phase.detail}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+</Layout>
+

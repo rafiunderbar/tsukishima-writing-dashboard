@@ -1,0 +1,95 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { loadAllData } from '../utils/parseData';
+
+const { glossary } = loadAllData();
+
+const typeLabel: Record<string, string> = {
+  character: '人物',
+  nation: '国家',
+  place: '地名',
+  term: '用語',
+  system: '制度',
+  force: '勢力',
+  meta: '方針',
+};
+
+const typeBadge: Record<string, string> = {
+  character: 'accent',
+  nation: 'warning',
+  place: 'success',
+  term: 'purple',
+  system: 'danger',
+  force: 'warning',
+  meta: 'muted',
+};
+
+const classificationBadge: Record<string, string> = {
+  '正史': 'success',
+  '背景正史': 'accent',
+  '保留': 'warning',
+  '移植禁止': 'danger',
+  '採用候補': 'purple',
+};
+---
+
+<Layout title="世界観 Wiki - 月島式">
+  <h1 class="page-title">世界観 Wiki</h1>
+
+  <div class="filter-bar">
+    <input type="text" class="search-input" id="wiki-search" placeholder="名前で検索..." />
+    <button class="filter-btn active" data-filter="all">全て</button>
+    <button class="filter-btn" data-filter="character">人物</button>
+    <button class="filter-btn" data-filter="place">地名</button>
+    <button class="filter-btn" data-filter="term">用語</button>
+    <button class="filter-btn" data-filter="force">勢力</button>
+    <button class="filter-btn" data-filter="nation">国家</button>
+    <button class="filter-btn" data-filter="system">制度</button>
+  </div>
+
+  <div class="cards-grid" id="wiki-grid">
+    {glossary.map(entry => (
+      <div class="card" data-type={entry.type} data-name={entry.name}>
+        <div class="card-cat">
+          <span class={`badge badge-${typeBadge[entry.type]}`}>{typeLabel[entry.type]}</span>
+        </div>
+        <div class="card-title">{entry.name}</div>
+        <div class="card-desc">{entry.description || '説明なし'}</div>
+        <div class="card-meta">
+          <span class={`badge badge-${classificationBadge[entry.classification] || 'muted'}`}>{entry.classification}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</Layout>
+
+<script>
+  const searchInput = document.getElementById('wiki-search') as HTMLInputElement;
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>('#wiki-grid .card');
+
+  let activeFilter = 'all';
+
+  function applyFilters() {
+    const query = searchInput.value.toLowerCase();
+    cards.forEach(card => {
+      const type = card.dataset.type || '';
+      const name = (card.dataset.name || '').toLowerCase();
+      const matchType = activeFilter === 'all' || type === activeFilter;
+      const matchSearch = !query || name.includes(query);
+      card.style.display = matchType && matchSearch ? '' : 'none';
+    });
+  }
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter || 'all';
+      applyFilters();
+    });
+  });
+
+  searchInput.addEventListener('input', applyFilters);
+</script>
+

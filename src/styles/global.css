@@ -1,0 +1,562 @@
+/* ─── 月島式執筆ダッシュボード グローバルスタイル ─── */
+
+:root {
+  --bg-page: #f8f7f4;
+  --bg-card: #ffffff;
+  --bg-sidebar: #1c1c1e;
+  --bg-hover: #f0efec;
+  --bg-input: #f4f3f0;
+
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b6b6b;
+  --text-muted: #9a9a9a;
+  --text-inverse: #e8e8e8;
+
+  --border: #e2e0db;
+  --border-strong: #ccc9c2;
+
+  --accent: #2563eb;
+  --accent-bg: #eff6ff;
+  --accent-text: #1d4ed8;
+
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+  --success-text: #15803d;
+
+  --warning: #d97706;
+  --warning-bg: #fffbeb;
+  --warning-text: #b45309;
+
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --danger-text: #b91c1c;
+
+  --purple: #7c3aed;
+  --purple-bg: #f5f3ff;
+  --purple-text: #6d28d9;
+
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-page: #121214;
+    --bg-card: #1c1c1e;
+    --bg-sidebar: #0a0a0b;
+    --bg-hover: #2a2a2d;
+    --bg-input: #2a2a2d;
+
+    --text-primary: #e8e8e8;
+    --text-secondary: #a0a0a0;
+    --text-muted: #6b6b6b;
+    --text-inverse: #1a1a1a;
+
+    --border: #2e2e30;
+    --border-strong: #444;
+
+    --accent: #60a5fa;
+    --accent-bg: #1e3a5f;
+    --accent-text: #93c5fd;
+
+    --success: #4ade80;
+    --success-bg: #14532d;
+    --success-text: #86efac;
+
+    --warning: #fbbf24;
+    --warning-bg: #451a03;
+    --warning-text: #fcd34d;
+
+    --danger: #f87171;
+    --danger-bg: #450a0a;
+    --danger-text: #fca5a5;
+
+    --purple: #a78bfa;
+    --purple-bg: #2e1065;
+    --purple-text: #c4b5fd;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── レイアウト ─── */
+
+.app-shell {
+  min-height: 100vh;
+}
+
+/* ─── サイドバー ─── */
+
+.sidebar {
+  background: var(--bg-sidebar);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+  gap: 4px;
+  position: fixed;
+  width: 56px;
+  height: 100vh;
+  z-index: 10;
+}
+
+.sidebar-logo {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-inverse);
+  margin-bottom: 20px;
+  writing-mode: vertical-rl;
+  letter-spacing: 0.2em;
+}
+
+.nav-item {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  text-decoration: none;
+  transition: all 0.15s;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.1);
+  color: #ccc;
+}
+
+.nav-item.active {
+  background: var(--accent);
+  color: white;
+}
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sidebar-spacer { flex: 1; }
+
+/* ─── メインコンテンツ ─── */
+
+.main-content {
+  margin-left: 56px;
+  padding: 28px 32px;
+  max-width: 1100px;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* ─── メトリクスカード ─── */
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.metric-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+
+.metric-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metric-value {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.metric-sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+/* ─── カードグリッド ─── */
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  cursor: default;
+  transition: border-color 0.15s;
+}
+
+.card:hover { border-color: var(--border-strong); }
+
+.card-cat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.card-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  display: flex;
+  gap: 10px;
+}
+
+/* ─── フィルター ─── */
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-btn {
+  font-size: 12px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.filter-btn:hover { border-color: var(--border-strong); }
+
+.filter-btn.active {
+  background: var(--accent-bg);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  font-size: 13px;
+  color: var(--text-primary);
+  font-family: inherit;
+  outline: none;
+}
+
+.search-input:focus { border-color: var(--accent); }
+
+/* ─── 進捗リスト ─── */
+
+.progress-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.progress-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.progress-item.dim { opacity: 0.5; }
+
+.progress-num {
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.progress-title { font-size: 13px; flex: 1; min-width: 120px; }
+.progress-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+.progress-bar-track {
+  height: 6px;
+  background: var(--bg-input);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+/* ─── ステータスバッジ ─── */
+
+.badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.badge-success { background: var(--success-bg); color: var(--success-text); }
+.badge-warning { background: var(--warning-bg); color: var(--warning-text); }
+.badge-muted { background: var(--bg-input); color: var(--text-muted); }
+.badge-accent { background: var(--accent-bg); color: var(--accent-text); }
+.badge-danger { background: var(--danger-bg); color: var(--danger-text); }
+.badge-purple { background: var(--purple-bg); color: var(--purple-text); }
+
+/* ─── キャラクター詳細 ─── */
+
+.char-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .char-layout { grid-template-columns: 1fr; }
+}
+
+.char-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.char-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.char-list-item:hover { border-color: var(--border-strong); }
+.char-list-item.active {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.char-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.char-detail-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+
+.detail-section {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.detail-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+
+/* ─── タイムライン ─── */
+
+.timeline {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.timeline-row {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+
+.timeline-row:last-child { border-bottom: none; }
+.timeline-row.dim { opacity: 0.4; }
+
+.timeline-chapter {
+  font-size: 13px;
+  font-weight: 600;
+  width: 52px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.timeline-events {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+}
+
+.timeline-event {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--bg-input);
+  color: var(--text-secondary);
+}
+
+/* ─── 伏線管理 ─── */
+
+.foreshadow-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 8px;
+}
+
+.foreshadow-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.foreshadow-role {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.phase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.phase-item {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  align-items: baseline;
+}
+
+.phase-stage {
+  font-weight: 500;
+  width: 36px;
+  flex-shrink: 0;
+  color: var(--accent-text);
+}
+
+/* ─── 2カラムレイアウト ─── */
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .two-col { grid-template-columns: 1fr; }
+}
+
+.section-header {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── 更新ログ ─── */
+
+.update-item {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--border);
+}
+
+.update-title { font-size: 13px; font-weight: 500; }
+.update-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.update-date { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
+

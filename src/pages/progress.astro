@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { loadAllData } from '../utils/parseData';
+
+const { chapters, stats } = loadAllData();
+
+const statusLabel: Record<string, string> = {
+  completed: '完成稿',
+  draft: '草稿',
+  concept: '構想中',
+};
+
+const statusBadge: Record<string, string> = {
+  completed: 'success',
+  draft: 'warning',
+  concept: 'muted',
+};
+---
+
+<Layout title="執筆進捗 - 月島式">
+  <h1 class="page-title">執筆進捗</h1>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">完成稿</div>
+      <div class="metric-value">
+        {stats.completedChapters}<span class="metric-sub">/{stats.totalChapters}話</span>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">総文字数</div>
+      <div class="metric-value">{stats.totalWords.toLocaleString()}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">全話数</div>
+      <div class="metric-value">{stats.totalChapters}<span class="metric-sub">話</span></div>
+    </div>
+  </div>
+
+  <div class="progress-list">
+    {chapters.map(ch => (
+      <div class={`progress-item${ch.status === 'concept' ? ' dim' : ''}`}>
+        <div class="progress-num">第{ch.number}話</div>
+        <div>
+          <div class="progress-title">{ch.title}</div>
+          {ch.wordCount && <div class="progress-sub">{ch.wordCount.toLocaleString()}文字</div>}
+        </div>
+        <span class={`badge badge-${statusBadge[ch.status]}`}>
+          {statusLabel[ch.status]}
+        </span>
+        <div style="font-size: 12px; color: var(--text-muted); text-align: right;">
+          {ch.wordCount ? `${ch.wordCount.toLocaleString()}字` : '—'}
+        </div>
+      </div>
+    ))}
+  </div>
+</Layout>
+

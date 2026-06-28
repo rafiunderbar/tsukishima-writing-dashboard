@@ -1,0 +1,95 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { loadAllData } from '../utils/parseData';
+
+const { chapters } = loadAllData();
+
+interface TimelineEvent {
+  text: string;
+  color: string;
+}
+
+interface TimelineChapter {
+  number: number;
+  title: string;
+  dim: boolean;
+  events: TimelineEvent[];
+}
+
+const timelineData: TimelineChapter[] = [
+  {
+    number: 1,
+    title: chapters.find(c => c.number === 1)?.title || '第1章',
+    dim: false,
+    events: [
+      { text: '主人公が旅立つ', color: 'accent' },
+      { text: '世界観の提示', color: 'purple' },
+      { text: '相棒との出会い', color: 'accent' },
+    ],
+  },
+  {
+    number: 2,
+    title: chapters.find(c => c.number === 2)?.title || '第2章',
+    dim: false,
+    events: [
+      { text: '最初の試練', color: 'danger' },
+      { text: '新たな仲間', color: 'accent' },
+    ],
+  },
+  {
+    number: 3,
+    title: chapters.find(c => c.number === 3)?.title || '第3章',
+    dim: false,
+    events: [
+      { text: '敵対者の登場', color: 'danger' },
+      { text: '伏線の提示', color: 'purple' },
+    ],
+  },
+  {
+    number: 4,
+    title: chapters.find(c => c.number === 4)?.title || '第4章',
+    dim: true,
+    events: [
+      { text: '決断の時', color: 'accent' },
+    ],
+  },
+  {
+    number: 5,
+    title: chapters.find(c => c.number === 5)?.title || '第5章',
+    dim: true,
+    events: [
+      { text: 'クライマックス', color: 'danger' },
+    ],
+  },
+];
+
+const colorMap: Record<string, string> = {
+  accent: 'background: var(--accent-bg); color: var(--accent-text);',
+  purple: 'background: var(--purple-bg); color: var(--purple-text);',
+  danger: 'background: var(--danger-bg); color: var(--danger-text);',
+};
+---
+
+<Layout title="ストーリータイムライン - 月島式執筆ダッシュボード">
+  <h1 class="page-title">ストーリータイムライン</h1>
+  <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
+    各章の主要イベントを時系列で表示。色分け: <span style={colorMap.accent} class="badge">人物関連</span>
+    <span style={colorMap.purple} class="badge">世界観</span>
+    <span style={colorMap.danger} class="badge">衝突・危機</span>
+  </p>
+
+  <div class="timeline">
+    {timelineData.map(ch => (
+      <div class={`timeline-row${ch.dim ? ' dim' : ''}`}>
+        <div class="timeline-chapter">第{ch.number}章</div>
+        <div class="timeline-events">
+          {ch.events.map(ev => (
+            <span class="timeline-event" style={colorMap[ev.color]}>
+              {ev.text}
+            </span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</Layout>
